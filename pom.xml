@@ -29,7 +29,7 @@
   					<descriptorRef>jar-with-dependencies</descriptorRef>
   					</descriptorRefs>
   					<finalName>myDemoApp-1.0-SNAPSHOT</finalName>
-  					<appendAssemblyld>false</appendAssemblyld>
+  					<appendAssemblyId>false</appendAssemblyId>
   					<archive>
   						<manifest>
   							<mainClass>com.mycompany.app.App</mainClass>
