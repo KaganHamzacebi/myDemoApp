@@ -11,28 +11,24 @@ import java.util.Map;
 import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
 
-/**
- * Hello world!
- *
- */
 public class App
 {
-
-	public static boolean search(ArrayList<Integer> array, int e){
+	public static boolean search(ArrayList<Integer> array, int e) {
 		System.out.println("inside search");
 		if(array == null) return false;
+
 		for(int elt : array){
 			if (elt == e) return true;
 		}
 		return false;
 	}
 
-	public static void main( String[] args ) {
+	public static void main(String[] args) {
 		port(getHerokuAssignedPort());
 
-		get("/",(req,res) -> "Hello, World");
+		get("/", (req, res) -> "Hello, World");
 
-		post("/compute",(req,res) -> {
+		post("/compute", (req, res) -> {
 					//System.out.println(req.queryParams("input1"));
 					//System.out.println(req.queryParams("input2"));
 
@@ -42,29 +38,28 @@ public class App
 					java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
 					while (sc1.hasNext())
 					{
-						int value = Integer.parseInt(sc1.next().replaceAll("//s", ""));
+						int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
 						inputList.add(value);
 					}
 					System.out.println(inputList);
 
-					String input2 = req.queryParams("input2").replaceAll("\\s", "");
+					String input2 = req.queryParams("input2").replaceAll("\\s","");
 					int input2AsInt = Integer.parseInt(input2);
 
 					boolean result = App.search(inputList, input2AsInt);
 
 					Map map = new HashMap();
-					map.put("result", "not computed yet!");
+					map.put("result", result);
 					return new ModelAndView(map, "compute.mustache");
-				},
-				new MustacheTemplateEngine());
+				}, new MustacheTemplateEngine());
 
-		get("/compute",
-				(rq, rs) -> {
-					Map map = new HashMap();
-					map.put("result", "not computed yet!");
-					return new ModelAndView(map, "compute.mustache");
-				},
-				new MustacheTemplateEngine());
+				get("/compute",
+					(rq, rs) -> {
+						Map map = new HashMap();
+						map.put("result", "not computed yet!");
+						return new ModelAndView(map, "compute.mustache");
+					},
+					new MustacheTemplateEngine());
 	}
 
 	static int getHerokuAssignedPort(){
