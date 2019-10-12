@@ -21,7 +21,6 @@ public class App
 	public static boolean search(ArrayList<Integer> array, int e){
 		System.out.println("inside search");
 		if(array == null) return false;
-
 		for(int elt : array){
 			if (elt == e) return true;
 		}
@@ -58,12 +57,21 @@ public class App
 			return new ModelAndView(map, "compute.mustache");
 			},
 				new MustacheTemplateEngine());
+
+        	get("/compute",
+				(rq, rs) -> {
+					Map map = new HashMap();
+					map.put("result", "not computed yet!");
+					return new ModelAndView(map, "compute.mustache");
+				},
+				new MustacheTemplateEngine());
+	}
+
+	static int getHerokuAssignedPort(){
+		ProcessBuilder processBuilder = new ProcessBuilder();
+		if(processBuilder.environment().get("PORT") != null){
+			return Integer.parseInt(processBuilder.environment().get("PORT"));
 		}
-		static int getHerokuAssignedPort(){
-			ProcessBuilder processBuilder = new ProcessBuilder();
-			if(processBuilder.environment().get("PORT") != null){
-				return Integer.parseInt(processBuilder.environment().get("PORT"));
-			}
 		return 4567; //return default port if heroku-pot isn't set(i.e on localhost)
     }
 }
